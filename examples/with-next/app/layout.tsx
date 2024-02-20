@@ -17,7 +17,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <MockProvider>{children}</MockProvider>
+        <MockProvider />
+        {children}
       </body>
     </html>
   )
