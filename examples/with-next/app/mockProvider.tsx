@@ -1,17 +1,18 @@
 'use client'
 
-let triggered = false
+import { use, cache } from 'react'
 
-async function enableApiMocking() {
+const start = cache(async () => {
   const { worker } = await import('../mocks/browser')
   await worker.start()
-}
+})
 
-export function MockProvider() {
-  if (!triggered) {
-    triggered = true
-    throw enableApiMocking()
+function MockProvider() {
+  if (typeof window !== 'undefined') {
+    use(start())
   }
 
   return null
 }
+
+export default MockProvider

@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { MockProvider } from './mockProvider'
+// import dynamic from 'next/dynamic'
+import { lazy } from 'react'
+// import { MockProvider } from './mockProvider'
+
+const MockProvider = lazy(() => import('./mockProvider'))
 
 const inter = Inter({ subsets: ['latin'] })
 

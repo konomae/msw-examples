@@ -1,37 +1,40 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type Movie = {
   id: string
   title: string
 }
 
+const fetchMovies = () => {
+  return fetch('/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+        query ListMovies {
+          movies {
+            id
+            title
+          }
+        }
+      `,
+    }),
+  }).then((response) => response.json())
+}
+
 export function MovieList() {
   const [movies, setMovies] = useState<Array<Movie>>([])
 
-  const fetchMovies = () => {
-    fetch('/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `
-          query ListMovies {
-            movies {
-              id
-              title
-            }
-          }
-        `,
-      }),
-    })
-      .then((response) => response.json())
+  useEffect(() => {
+    fetchMovies()
       .then((response) => {
         setMovies(response.data.movies)
       })
       .catch(() => setMovies([]))
-  }
+  }, [])
 
   return (
     <div>
